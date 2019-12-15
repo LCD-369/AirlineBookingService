@@ -1,7 +1,7 @@
 package com.team.alpha.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -13,8 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="tbl_flights")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Flight implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -24,19 +28,20 @@ public class Flight implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
+	 
 	@ManyToOne
 	@JoinColumn(name="departure")
 	private Airport departureAirport;
-	
+
 	@ManyToOne
 	@JoinColumn(name="destination")
 	private Airport destination;
 	
 	@Column(name="departure_date")
-	private LocalDateTime departureDate;
+	private LocalDate departureDate;
 	
 	@Column(name="arrival_date")
-	private LocalDateTime arrivalDate;
+	private LocalDate arrivalDate;
 	
 	@Column(name="flight_number")
 	private int flightNumber;
@@ -44,8 +49,8 @@ public class Flight implements Serializable {
 	public Flight() {
 	}
 
-	public Flight(int id, Airport departureAirport, Airport destination, LocalDateTime departureDate,
-			LocalDateTime arrivalDate, int flightNumber) {
+	public Flight(final int id, final Airport departureAirport,final Airport destination, final LocalDate departureDate,
+			final LocalDate arrivalDate, final int flightNumber) {
 		this.id = id;
 		this.departureAirport = departureAirport;
 		this.destination = destination;
@@ -66,11 +71,11 @@ public class Flight implements Serializable {
 		return destination;
 	}
 
-	public LocalDateTime getDepartureDate() {
+	public LocalDate getDepartureDate() {
 		return departureDate;
 	}
 
-	public LocalDateTime getArrivalDate() {
+	public LocalDate getArrivalDate() {
 		return arrivalDate;
 	}
 
@@ -85,7 +90,7 @@ public class Flight implements Serializable {
 		
 	}
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (this == obj) {
 				return true;
 			} else if (obj instanceof Flight) {
@@ -99,15 +104,5 @@ public class Flight implements Serializable {
 			}
 		}
 		
-		@Override
-		public String toString() {
-			return String.format(
-					"Flight %d (internal #%d) from %s (%s) at %s %s to %s (%s) at %s %s",
-					flightNumber, id, departureAirport.getCode(),
-					departureAirport.getName(), departureDate.toLocalDate().toString(),
-					departureDate.toLocalTime().toString(), destination.getCode(),
-					destination.getName(), arrivalDate.toLocalDate().toString(),
-					arrivalDate.toLocalTime().toString());
-		}
-	
+		
 }

@@ -2,6 +2,7 @@ package com.team.alpha.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import com.team.alpha.controller.TicketController;
+import com.team.alpha.dao.AirportDao;
 import com.team.alpha.dao.FlightDao;
 import com.team.alpha.dao.TicketDao;
+import com.team.alpha.model.Airport;
 import com.team.alpha.model.Flight;
 import com.team.alpha.model.SeatAspects;
 import com.team.alpha.model.Ticket;
@@ -28,6 +31,9 @@ public class TicketService {
 	@Autowired
 	private FlightDao flightDao;
 	
+	@Autowired
+	private AirportDao airportDao;
+	
 	private final int defaultBookingExpiration=10;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TicketService.class);
@@ -35,25 +41,14 @@ public class TicketService {
 	public List<Ticket> findAllTickets() {		
 		return ticketDao.findAll();		
 	}
-	
-	public Flight getFlight(int flightNumber) {
-		List<Flight> list = flightDao.findByFlightNumber(flightNumber);
-		if (list.isEmpty()) {
-			return null;
-		} else {
-			return list.get(0);
-		}
-	}
 
-	public Ticket getTicket(SeatAspects seat) {
+
+	public Ticket getTicket(final SeatAspects seat) {
 		return ticketDao.findById(seat).get();
 	}
 	
-	public Ticket getTicketAlt(SeatAspects seat) {
-		return ticketDao.findByCompositeKeys(seat.getFlight().getFlightNumber(), seat.getRow(), seat.getSeat());
-	}
 
-	public Ticket getBooking(String bookingId) {
+	public Ticket getBooking(final String bookingId) {
 		List<Ticket> list = ticketDao.findByBookingId(bookingId);
 		if (list.isEmpty()) {
 			return null;
@@ -64,31 +59,54 @@ public class TicketService {
 		}
 	}
 	
-	public Ticket bookTicket(SeatAspects seat, User user) {	
+	public Ticket bookTicket(final SeatAspects seat, final User user) {	
 		return bookTicket(seat, user,
-				LocalDateTime.now().plusMinutes(defaultBookingExpiration));
-				
+				LocalDateTime.now().plusMinutes(defaultBookingExpiration));		
 	}
 
 	@Transactional
-	public Ticket bookTicket(SeatAspects seat, User user, LocalDateTime timeout) {
-		
-		
-		System.out.println(timeout.toString());
-		System.out.println(seat.toString());
-		System.out.println(user.toString());
+	public Ticket bookTicket(final SeatAspects seat, final User user, final LocalDateTime timeout) {	
 		Ticket ticket = getTicket(seat);
-		System.out.println(ticket.toString());
-		System.out.println(ticket.getReserver());
+//		System.out.println(ticket.toString());
+//		System.out.println(user.toString());
+//		System.out.println(timeout);
 		if (ticket.getReserver() != null) {
 			throw new IllegalArgumentException("Ticket already reserved");
 		}
 		ticket.setReserver(user);
+//		System.out.println(ticket.getReserver());
 		ticket.setReservationTimeout(timeout);
+//		System.out.println(ticket.getReservationTimeout());
 		ticket.setBookingId(DigestUtils.md5DigestAsHex(String.format("%d %d %s %d", seat.getFlight().getFlightNumber(),
 			seat.getRow(), seat.getSeat(), user.getId()).getBytes()));
+		
+		System.out.println(ticket.getBookingId());
 		ticketDao.saveAndFlush(ticket);
 		return ticket;
 	}
 	
+	public List<Ticket> findByFlightNumber(int flightNumber) {
+		List<Ticket> temp = ticketDao.findByFlight(flightNumber);
+		return temp;
+	}
+	
+	public Flight getFlight(final int flightNumber) {
+		final List<Flight> list = flightDao.findByFlightNumber(flightNumber);
+		if (list.isEmpty()) {
+			return null;
+		} else {
+			return list.get(0);
+		}
+	}
+	
+	public Ticket cancelExistingBooking(final Ticket ticket) {
+		ticketDao.saveAndFlush(ticket);
+		return ticket;
+	}
+
+
+	public List<Ticket> findByUserId(int id) {
+		
+		return ticketDao.findByUser(id);
+	}
 }

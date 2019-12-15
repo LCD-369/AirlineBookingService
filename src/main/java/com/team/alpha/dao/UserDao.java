@@ -13,4 +13,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
 	@Query(value="from User where username=:username")
 	User findByUsername(@Param("username") String username);
 	
+	@Query(value="from User where username=:username and password=:password")
+	User findByUsernamePassword(@Param("username") String username, @Param("password") String password);
+	
 }

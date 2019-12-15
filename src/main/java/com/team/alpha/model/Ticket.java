@@ -30,7 +30,7 @@ public class Ticket {
 	
 	@ManyToOne
 	@JoinColumn(nullable=true, name="reserver")
-//	@JsonProperty(access=Access.WRITE_ONLY)
+	@JsonProperty(access=Access.WRITE_ONLY)
 	private User reserver;
 	
 	@Column(nullable=true, name="price")
@@ -79,7 +79,7 @@ public class Ticket {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(final Integer price) {
 		this.price = price;
 	}
 
@@ -88,11 +88,13 @@ public class Ticket {
 	}
 
 	public void setReservationTimeout(final LocalDateTime reservationTimeout) {
-		if (reserver == null && reservationTimeout != null) {
-			throw new IllegalStateException("Tickets only expire if someone reserved them");
-		} else if (reserver != null && price != null && reservationTimeout != null) {
-			throw new IllegalStateException("Only unconfirmed bookings can time out");
-		}
+		System.out.println("##################################################"+reservationTimeout);
+//		if (this.reserver == null && reservationTimeout != null) {
+//			throw new IllegalStateException("Tickets only expire if someone reserved them");
+//		} else if (this.reserver != null && this.price != null && reservationTimeout != null) {
+//			throw new IllegalStateException("Only unconfirmed bookings can time out");
+//		}
+		System.out.println("##################################################"+reservationTimeout);
 		this.reservationTimeout = reservationTimeout;
 	}
 
@@ -100,32 +102,33 @@ public class Ticket {
 		return bookingId;
 	}
 
-	public void setBookingId(final String bookingId) {
+	public void setBookingId( final String bookingId) {
 		if (reserver == null && bookingId != null) {
 			throw new IllegalStateException("Unbooked seat cannot have a booking ID");
 		} else if (reserver != null && bookingId == null) {
 			throw new IllegalStateException("Booked seat must have booking ID");
 		}
+		
 		this.bookingId = bookingId;
 	}
 
-	@JsonIgnore
-	public boolean isValid() {
-		if (reserver == null) {
-			return reservationTimeout == null && price == null && bookingId == null;
-		} else if (bookingId == null) {
-			return false;
-		} else if (price == null) {
-			return reservationTimeout != null;
-		} else {
-			return reservationTimeout == null;
-		}
-	}
-	
-	@JsonGetter(value = "reserved")
-	public boolean isReserved() {
-		return reserver != null;
-	}
+//	@JsonIgnore
+//	public boolean isValid() {
+//		if (reserver == null) {
+//			return reservationTimeout == null && price == null && bookingId == null;
+//		} else if (bookingId == null) {
+//			return false;
+//		} else if (price == null) {
+//			return reservationTimeout != null;
+//		} else {
+//			return reservationTimeout == null;
+//		}
+//	}
+//	
+//	@JsonGetter(value = "reserved")
+//	public boolean isReserved() {
+//		return reserver != null;
+//	}
 
 	@Override
 	public String toString() {

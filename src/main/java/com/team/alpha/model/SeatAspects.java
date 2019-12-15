@@ -27,7 +27,7 @@ public class SeatAspects implements Serializable {
 		
 	}
 
-	public SeatAspects(Flight flight, int row, String seat) {
+	public SeatAspects(final Flight flight, final int row, final String seat) {
 		this.flight = flight;
 		this.row = row;
 		this.seat = seat;
@@ -44,6 +44,20 @@ public class SeatAspects implements Serializable {
 	public String getSeat() {
 		return seat;
 	}
+	
+	
+
+	public void setFlight(Flight flight) {
+		this.flight = flight;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public void setSeat(String seat) {
+		this.seat = seat;
+	}
 
 	@Override
 	public int hashCode() {
@@ -51,7 +65,7 @@ public class SeatAspects implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof SeatAspects) {
