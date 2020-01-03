@@ -13,26 +13,26 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import com.team.alpha.controller.TicketController;
-import com.team.alpha.dao.AirportDao;
-import com.team.alpha.dao.FlightDao;
-import com.team.alpha.dao.TicketDao;
 import com.team.alpha.model.Airport;
 import com.team.alpha.model.Flight;
 import com.team.alpha.model.SeatAspects;
 import com.team.alpha.model.Ticket;
 import com.team.alpha.model.User;
+import com.team.alpha.repository.AirportRepository;
+import com.team.alpha.repository.FlightRepository;
+import com.team.alpha.repository.TicketRepository;
 
 @Service
 public class TicketService {
 
 	@Autowired
-	private TicketDao ticketDao;
+	private TicketRepository ticketDao;
 	
 	@Autowired
-	private FlightDao flightDao;
+	private FlightRepository flightDao;
 	
 	@Autowired
-	private AirportDao airportDao;
+	private AirportRepository airportDao;
 	
 	private final int defaultBookingExpiration=10;
 	

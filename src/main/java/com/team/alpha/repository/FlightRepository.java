@@ -1,4 +1,4 @@
-package com.team.alpha.dao;
+package com.team.alpha.repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +12,7 @@ import com.team.alpha.model.Airport;
 import com.team.alpha.model.Flight;
 
 @Repository
-public interface FlightDao extends JpaRepository<Flight, Integer> {
+public interface FlightRepository extends JpaRepository<Flight, Integer> {
 	
 	@Query(value="from Flight where id=:id")
 	List<Flight> findByFlightNumber(int id);

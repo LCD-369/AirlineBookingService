@@ -1,5 +1,7 @@
 package com.team.alpha.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,11 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping(value="/search")
-	public ResponseEntity<User> findUser(@RequestParam(value="username") String username, @RequestParam(value="password") String password) {
-		User user = userService.searchByUsernamePassword(username, password);
+	public ResponseEntity<?> findUser(@RequestParam(value="username") String username) {
+		Optional<User> user = userService.searchByUsername(username);
 		if (user == null) {
-            return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<User>(user, HttpStatus.OK);	
+		return new ResponseEntity<>(user, HttpStatus.OK);	
 	}
 }

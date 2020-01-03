@@ -16,14 +16,13 @@ import com.team.alpha.model.Airport;
 import com.team.alpha.service.AirportService;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path="/search/api/")
 public class AirportController {
 	
 	@Autowired
 	private AirportService airportService;
 
-	@GetMapping(value="/airport/", produces={"application/json", "application/xml"})
+	@GetMapping(value="/airport/")
 	public ResponseEntity<List<Airport>> findAirports()	{
 		List<Airport> airports = airportService.getAirports();
 		if (airports.isEmpty()) {

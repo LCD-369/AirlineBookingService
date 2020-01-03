@@ -17,14 +17,13 @@ import com.team.alpha.model.Flight;
 import com.team.alpha.service.FlightService;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path="/search")
 public class FlightController {
 	
 	@Autowired
 	private FlightService flightService;
 	
-	@GetMapping(value="/flights/", produces={"application/json", "application/xml"})
+	@GetMapping(value="/flights/")
 	public ResponseEntity<List<Flight>> findFlights()	{
 		List<Flight> flights = flightService.getFlight();
 		if (flights.isEmpty()) {
@@ -33,7 +32,7 @@ public class FlightController {
 		return new ResponseEntity<List<Flight>>(flights, HttpStatus.OK);	
 	}
 	
-	@GetMapping(value="/flight/{departureAirport}/{destination}/{departureDate}/{arrivalDate}", produces={"application/json", "application/xml"})
+	@GetMapping(value="/flight/{departureAirport}/{destination}/{departureDate}/{arrivalDate}")
 	public ResponseEntity<Flight> findFlight(
 			@PathVariable(value="departureAirport") String departureAirport, 
 			@PathVariable(value="destination") String destination, 

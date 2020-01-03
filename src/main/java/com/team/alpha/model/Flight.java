@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -27,7 +26,6 @@ public class Flight implements Serializable {
 	@Column
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
 	 
 	@ManyToOne
 	@JoinColumn(name="departure")

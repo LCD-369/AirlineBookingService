@@ -1,4 +1,4 @@
-package com.team.alpha.dao;
+package com.team.alpha.repository;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.team.alpha.model.Ticket;
 
 
 @Repository
-public interface TicketDao extends JpaRepository<Ticket, SeatAspects> {
+public interface TicketRepository extends JpaRepository<Ticket, SeatAspects> {
 	
 	@Query(value="from Ticket where flight=:flight and seat_row=:seatRow and seat=:seat")
 	Ticket findByCompositeKeys(@Param("flight") Flight flightnumber, @Param("seatRow") int seatrow, 

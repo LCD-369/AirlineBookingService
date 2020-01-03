@@ -6,19 +6,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.team.alpha.dao.AirportDao;
-import com.team.alpha.dao.FlightDao;
 import com.team.alpha.model.Airport;
 import com.team.alpha.model.Flight;
+import com.team.alpha.repository.AirportRepository;
+import com.team.alpha.repository.FlightRepository;
 
 @Service
 public class FlightService {
 	
 	@Autowired
-	private FlightDao flightDao;
+	private FlightRepository flightDao;
 	
 	@Autowired
-	private AirportDao airportDao;
+	private AirportRepository airportDao;
 	
 	public List<Flight> getFlight() {
 		List<Flight> list = flightDao.findAll();

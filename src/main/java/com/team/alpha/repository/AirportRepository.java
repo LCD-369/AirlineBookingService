@@ -1,4 +1,4 @@
-package com.team.alpha.dao;
+package com.team.alpha.repository;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import com.team.alpha.model.Airport;
 
 
 @Repository
-public interface AirportDao extends JpaRepository<Airport, String> {
+public interface AirportRepository extends JpaRepository<Airport, String> {
 	
 	@Query(value="from Airport where name=:name")
 	List<Airport> searchByName(@Param("name") String name);
