@@ -15,4 +15,7 @@ public interface AirportRepository extends JpaRepository<Airport, String> {
 	
 	@Query(value="from Airport where name=:name")
 	List<Airport> searchByName(@Param("name") String name);
+	
+	@Query(value="SELECT * FROM tbl_airports", nativeQuery = true)
+	List<Airport> getAll();
 }

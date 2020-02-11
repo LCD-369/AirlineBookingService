@@ -27,7 +27,6 @@ public class TicketController {
 	@Autowired
 	private TicketService ticketService;
 	
-	
 	@GetMapping(value="/ticket/")
 	public ResponseEntity<List<Ticket>> getAllTickets()	{
 		List<Ticket> tickets = ticketService.findAllTickets();
@@ -35,8 +34,7 @@ public class TicketController {
             return new ResponseEntity<List<Ticket>>(HttpStatus.NO_CONTENT);
 		} 
 		return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.OK);	
-	}
-	
+	}	
 	
 	@GetMapping(value="/ticket/{flightNumber}")
 	public ResponseEntity<List<Ticket>> findTicket(@PathVariable(value="flightNumber") int flightNumber) {
@@ -56,21 +54,17 @@ public class TicketController {
 		return new ResponseEntity<List<Ticket>>(ticket, HttpStatus.OK);	
 	}
 	
-
 	@PostMapping(value="/ticket/reserve/{flight}/{row}/{seat}")
 	public ResponseEntity<Ticket> bookTicket(@PathVariable final int flight,
 			@PathVariable final int row, @PathVariable final String seat,
 			@RequestBody final User user) {
 			return new ResponseEntity<>(ticketService.bookTicket(
-					new SeatAspects(ticketService.getFlight(flight), row, seat), user),
-					HttpStatus.CREATED);
-		
+				new SeatAspects(ticketService.getFlight(flight), row, seat), user), HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value="/ticket/cancel")
 	public ResponseEntity<Ticket> cancelTicket(@RequestBody final Ticket ticket) {
-			return new ResponseEntity<Ticket>(ticketService.cancelExistingBooking(ticket),
-					HttpStatus.CREATED);
+			return new ResponseEntity<Ticket>(ticketService.cancelExistingBooking(ticket), HttpStatus.CREATED);
 	}
 	
 }

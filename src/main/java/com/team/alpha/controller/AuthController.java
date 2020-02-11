@@ -1,7 +1,6 @@
 package com.team.alpha.controller;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -30,7 +29,6 @@ import com.team.alpha.model.User;
 import com.team.alpha.repository.RoleRepository;
 import com.team.alpha.repository.UserRepository;
 import com.team.alpha.security.jwt.JwtProvider;
-
 
 @RestController
 @RequestMapping("/api/user")
@@ -61,8 +59,7 @@ public class AuthController {
 
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		
-		
+
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
 	}
 
@@ -79,9 +76,8 @@ public class AuthController {
 		}
 
 		// Creating user's account
-		User user = new User(signUpRequest.getDisplayName(), signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()), 
-				signUpRequest.getEmail(),
-				signUpRequest.getPhone());
+		User user = new User(signUpRequest.getDisplayName(), signUpRequest.getUsername(),
+				encoder.encode(signUpRequest.getPassword()), signUpRequest.getEmail(), signUpRequest.getPhone());
 
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();

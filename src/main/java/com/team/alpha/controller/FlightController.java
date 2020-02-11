@@ -24,7 +24,7 @@ public class FlightController {
 	private FlightService flightService;
 	
 	@GetMapping(value="/flights/")
-	public ResponseEntity<List<Flight>> findFlights()	{
+	public ResponseEntity<?> findFlights()	{
 		List<Flight> flights = flightService.getFlight();
 		if (flights.isEmpty()) {
             return new ResponseEntity<List<Flight>>(HttpStatus.NO_CONTENT);

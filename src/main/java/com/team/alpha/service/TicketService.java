@@ -67,20 +67,13 @@ public class TicketService {
 	@Transactional
 	public Ticket bookTicket(final SeatAspects seat, final User user, final LocalDateTime timeout) {	
 		Ticket ticket = getTicket(seat);
-//		System.out.println(ticket.toString());
-//		System.out.println(user.toString());
-//		System.out.println(timeout);
 		if (ticket.getReserver() != null) {
 			throw new IllegalArgumentException("Ticket already reserved");
 		}
 		ticket.setReserver(user);
-//		System.out.println(ticket.getReserver());
 		ticket.setReservationTimeout(timeout);
-//		System.out.println(ticket.getReservationTimeout());
 		ticket.setBookingId(DigestUtils.md5DigestAsHex(String.format("%d %d %s %d", seat.getFlight().getFlightNumber(),
 			seat.getRow(), seat.getSeat(), user.getId()).getBytes()));
-		
-		System.out.println(ticket.getBookingId());
 		ticketDao.saveAndFlush(ticket);
 		return ticket;
 	}

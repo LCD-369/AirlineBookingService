@@ -21,8 +21,8 @@ public class FlightService {
 	private AirportRepository airportDao;
 	
 	public List<Flight> getFlight() {
-		List<Flight> list = flightDao.findAll();
-		return list;
+		
+		return flightDao.findAll();
 	}
 	
 	public Flight findFlight(String departureAirport, String destination, LocalDate departureDate, LocalDate arrivalDate) {

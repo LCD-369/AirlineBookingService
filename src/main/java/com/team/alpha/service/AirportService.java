@@ -15,7 +15,7 @@ public class AirportService {
 	private AirportRepository airportDao;
 	
 	public List<Airport> getAirports() {
-		return airportDao.findAll();	
+		return airportDao.getAll();	
 	}
 	
 	public Airport findAirportByName(String name) {
@@ -23,8 +23,8 @@ public class AirportService {
 		if (list.isEmpty()) {
 			return null;
 		} else {
-			Airport airport = list.get(0);
-			return airport;
+			return list.get(0);
+			
 		}
 	}
 	
